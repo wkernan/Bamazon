@@ -9,6 +9,7 @@
   "author": "Bill Kernan",
   "license": "ISC",
   "dependencies": {
+    "inquirer": "^1.1.2",
     "mysql": "^2.11.1",
     "prompt": "^1.0.0"
   }

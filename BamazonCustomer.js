@@ -13,7 +13,7 @@ var start = function() {
 	connection.query("SELECT * FROM Products", function(err, res) {
 		console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
 		res.forEach(function(items) {
-			console.log("ID: " + items.ItemID + " | " + "Item: " + items.ProductName + " | " + "Price: $" + items.Price + '\n');
+			console.log("ID: " + items.ItemID + " | " + "Item: " + items.ProductName + " | " + "Price: $" + items.Price + " | " + "Quantity: " + items.StockQuantity + '\n');
 		})
 		console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		setTimeout(function(){idPrompt(res)}, 200);
