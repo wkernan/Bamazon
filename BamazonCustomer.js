@@ -11,9 +11,11 @@ var connection = mysql.createConnection({
 
 var start = function() {
 	connection.query("SELECT * FROM Products", function(err, res) {
+		console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
 		res.forEach(function(items) {
 			console.log("ID: " + items.ItemID + " | " + "Item: " + items.ProductName + " | " + "Price: $" + items.Price + '\n');
 		})
+		console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		setTimeout(function(){idPrompt(res)}, 200);
 	})
 }
@@ -40,8 +42,8 @@ var buyPrompt = function(item) {
 	prompt.get(['number'], function(err, result) {
 		if(result.number.charCodeAt() >= 48 && result.number.charCodeAt() <= 57) {
 			if(result.number > 0 && result.number <= item.StockQuantity) {
-				console.log("Great! Thank you for your order. Your total amount will be: $" + (result.number * item.Price));
-				connection.query("UPDATE Products SET ? WHERE ?", [{StockQuantity: (item.StockQuantity - result.number)}, {ItemID: item.ItemID}], function(err, res) {console.log("Quantity Updated!");});
+				console.log("Great! Thank you for your order. Your total amount will be: $" + (result.number * item.Price) + '\n');
+				connection.query("UPDATE Products SET ? WHERE ?", [{StockQuantity: (item.StockQuantity - result.number)}, {ItemID: item.ItemID}], function(err, res) {setTimeout(function(){start();},500)});
 			} else {
 				console.log("Not enough quantity to fulfill this order, sorry.");
 				console.log("Please enter an amount less than or equal to: " + item.StockQuantity);
