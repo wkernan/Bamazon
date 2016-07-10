@@ -4,8 +4,8 @@ var prompt = require('prompt');
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
-    user: "root", //Your username
-    password: "", //Your password
+    user: "root", 
+    password: "", 
     database: "Bamazon"
 });
 
@@ -41,6 +41,7 @@ var buyPrompt = function(item) {
 		if(result.number.charCodeAt() >= 48 && result.number.charCodeAt() <= 57) {
 			if(result.number > 0 && result.number <= item.StockQuantity) {
 				console.log("Great! Thank you for your order. Your total amount will be: $" + (result.number * item.Price));
+				connection.query("UPDATE Products SET ? WHERE ?", [{StockQuantity: (item.StockQuantity - result.number)}, {ItemID: item.ItemID}], function(err, res) {console.log("Quantity Updated!");});
 			} else {
 				console.log("Not enough quantity to fulfill this order, sorry.");
 				console.log("Please enter an amount less than or equal to: " + item.StockQuantity);
