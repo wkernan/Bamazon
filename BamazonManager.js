@@ -53,8 +53,47 @@ var start = function() {
 }
 
 var addProduct = function() {
-	console.log("Add to Inventory");
-
+	console.log("++++++++++ Add to Inventory ++++++++++");
+	inquirer.prompt([
+		{
+			type: "input",
+			name: "name",
+			message: "What is the name of the item you want to add?"
+		},
+		{
+			type: "input",
+			name: "department",
+			message: "What department?"
+		},
+		{
+			type: "input",
+			name: "price",
+			message: "Selling price?"
+		},
+		{
+			type: "input",
+			name: "amt",
+			message: "How many do you have?"
+		}
+	]).then(function(answers) {
+		connection.query("INSERT INTO Products SET ?", {
+	    ProductName: answers.name,
+	    DepartmentName: answers.department,
+	    Price: answers.price,
+	    StockQuantity: answers.amt
+		}, function(err, res) {
+	    console.log("Your item has been added!");
+			connection.query("SELECT * FROM Products", function(err, res) {
+				console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+				console.log("Products\n");
+				res.forEach(function(items) {
+					console.log("ID: " + items.ItemID + " | " + "Item: " + items.ProductName + " | " + "Price: $" + items.Price + " | " + "Quantity: " + items.StockQuantity + '\n');
+				})
+				console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+			})
+			setTimeout(function(){start()},200);
+    });
+	})
 }
 
 var addInventory = function() {
@@ -104,7 +143,7 @@ var addIt = function(res) {
 				connection.query("UPDATE Products SET ? WHERE ?",[{StockQuantity: (parseInt(res.StockQuantity) + parseInt(answers.num))}, {ItemID: res.ItemID}], function(err, res) {});
 			}
 			connection.query("SELECT * FROM Products WHERE ItemID = " + res.ItemID, function(err,res) {
-				console.log("ID: " + res[0].ItemID + " | " + "Item: " + res[0].ProductName + " | " + "Price: $" + res[0].Price + " | " + "Quantity: " + res[0].StockQuantity);
+				console.log("ID: " + res[0].ItemID + " | " + "Item: " + res[0].ProductName + " | " + "Price: $" + res[0].Price + " | " + "Quantity: " + res[0].StockQuantity + "\n");
 			})
 			setTimeout(function(){start()},200);
 		} else {
