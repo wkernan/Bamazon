@@ -23,6 +23,7 @@ var start = function() {
 			case "View Products":
 				connection.query("SELECT * FROM Products", function(err, res) {
 					console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+					console.log("Products\n");
 					res.forEach(function(items) {
 						console.log("ID: " + items.ItemID + " | " + "Item: " + items.ProductName + " | " + "Price: $" + items.Price + " | " + "Quantity: " + items.StockQuantity + '\n');
 					})
@@ -33,6 +34,7 @@ var start = function() {
 			case "View Low Inventory":
 				connection.query("SELECT * FROM Products WHERE StockQuantity < 6", function(err, res) {
 					console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+					console.log("Low Inventory\n")
 					res.forEach(function(items) {
 						console.log("ID: " + items.ItemID + " | " + "Item: " + items.ProductName + " | " + "Price: $" + items.Price + " | " + "Quantity: " + items.StockQuantity + '\n');
 					})
@@ -43,7 +45,7 @@ var start = function() {
 			case "Add to Inventory":
 				addInventory();
 				break;
-			case "Add New Product";
+			case "Add New Product":
 				addProduct();
 				break;
 		}
@@ -51,12 +53,14 @@ var start = function() {
 }
 
 var addProduct = function() {
-	
+	console.log("Add to Inventory");
+
 }
 
 var addInventory = function() {
 	connection.query("SELECT * FROM Products", function(err, res) {
 		console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+		console.log("Add Inventory\n");
 		res.forEach(function(items) {
 			console.log("ID: " + items.ItemID + " | " + "Item: " + items.ProductName + " | " + "Price: $" + items.Price + " | " + "Quantity: " + items.StockQuantity + '\n');
 		})
