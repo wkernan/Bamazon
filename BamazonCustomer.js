@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var prompt = require('prompt');
+var inquirer = require('inquirer');
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -44,11 +45,23 @@ var buyPrompt = function(item) {
 			if(result.number > 0 && result.number <= item.StockQuantity) {
 				var department = item.DepartmentName;
 				console.log("Great! Thank you for your order. Your total amount will be: $" + (result.number * item.Price) + '\n');
-				console.log(department);
 				connection.query("SELECT * FROM Departments WHERE ?",[{DepartmentName: department}], function(err, res) {
 					connection.query("UPDATE Departments SET ? WHERE ?", [{TotalSales: parseInt(res[0].TotalSales) + (parseInt(result.number) * parseInt(item.Price))}, {DepartmentName: item.DepartmentName}], function(err, res){});
 				});
-				connection.query("UPDATE Products SET ? WHERE ?", [{StockQuantity: (item.StockQuantity - result.number)}, {ItemID: item.ItemID}], function(err, res) {setTimeout(function(){start();},500)});
+				connection.query("UPDATE Products SET ? WHERE ?", [{StockQuantity: (item.StockQuantity - result.number)}, {ItemID: item.ItemID}], function(err, res) {});
+				inquirer.prompt([
+					{
+						type: "confirm",
+						message: "Would you like to make another purchase?",
+						name: "choice"
+					}
+				]).then(function(answers) {
+					if(answers.choice == true) {
+						start();
+					} else {
+						process.exit();
+					}
+				})
 			} else {
 				console.log("Not enough quantity to fulfill this order, sorry.");
 				console.log("Please enter an amount less than or equal to: " + item.StockQuantity);

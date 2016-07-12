@@ -1,5 +1,6 @@
 var inquirer = require('inquirer');
 var mysql = require('mysql');
+var Table = require('cli-table');
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -22,13 +23,21 @@ var start = function() {
 		switch(answers.choice) {
 			case "View Product Sales by Department":
 				connection.query("SELECT * FROM Departments", function(err, res) {
-					console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
-					console.log("DepartmentID  |     DepartmentName     |  OverHeadCosts  |  ProductSales  |  TotalProfit");
-					console.log("----------------------------------------------------------------------------------------");
+					var table = new Table({
+						head: ["DepartmentID", "DepartmentName", "OverHeadCosts", "ProductSales", "TotalProfit"]
+					});
 					res.forEach(function(dep) {
-						console.log("       " + dep.DepartmentID + "      | " + dep.DepartmentName + "             |  " + dep.OverHeadCosts + "          " + dep.TotalSales + "          " + (parseInt(dep.TotalSales) - parseInt(dep.OverHeadCosts)));
+						var depArr = [];
+						depArr.push(dep.DepartmentID);
+						depArr.push(dep.DepartmentName);
+						depArr.push(dep.OverHeadCosts);
+						depArr.push(dep.TotalSales);
+						depArr.push(parseInt(dep.TotalSales) - parseInt(dep.OverHeadCosts));
+						table.push(depArr);
 					})
+					console.log(table.toString());
 				})
+				setTimeout(function(){start()},200);
 				break;
 		}
 	})
