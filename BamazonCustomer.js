@@ -46,7 +46,6 @@ var buyPrompt = function(item) {
 				console.log("Great! Thank you for your order. Your total amount will be: $" + (result.number * item.Price) + '\n');
 				console.log(department);
 				connection.query("SELECT * FROM Departments WHERE ?",[{DepartmentName: department}], function(err, res) {
-					//console.log(res[0].TotalSales);
 					connection.query("UPDATE Departments SET ? WHERE ?", [{TotalSales: parseInt(res[0].TotalSales) + (parseInt(result.number) * parseInt(item.Price))}, {DepartmentName: item.DepartmentName}], function(err, res){});
 				});
 				connection.query("UPDATE Products SET ? WHERE ?", [{StockQuantity: (item.StockQuantity - result.number)}, {ItemID: item.ItemID}], function(err, res) {setTimeout(function(){start();},500)});
