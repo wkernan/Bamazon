@@ -39,7 +39,43 @@ var start = function() {
 				})
 				setTimeout(function(){start()},200);
 				break;
+			case "Create New Department":
+				createNew();
+				break;
 		}
+	})
+}
+
+var createNew = function() {
+	console.log("++++++++++ New Department ++++++++++");
+	inquirer.prompt([
+		{
+			type: "input",
+			name: "name",
+			message: "What is the name of the new department?"
+		},
+		{
+			type: "input",
+			name: "cost",
+			message: "What is the overhead cost?"
+		}
+	]).then(function(answers) {
+		connection.query("INSERT INTO Departments SET ?", {
+	    DepartmentName: answers.name,
+	    OverHeadCosts: answers.cost,
+	    TotalSales: 0
+		}, function(err, res) {
+	    console.log("Department added!");
+			connection.query("SELECT * FROM Departments", function(err, res) {
+				console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+				console.log("Departments\n");
+				res.forEach(function(items) {
+					console.log("ID: " + items.DepartmentID + " | " + "Department: " + items.DepartmentName + " | " + "Overhead: $" + items.OverHeadCosts + '\n');
+				})
+				console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+			})
+			setTimeout(function(){start()},200);
+    });
 	})
 }
 
