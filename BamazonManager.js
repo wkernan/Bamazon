@@ -25,7 +25,7 @@ var start = function() {
 					console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
 					console.log("Products\n");
 					res.forEach(function(items) {
-						console.log("ID: " + items.ItemID + " | " + "Item: " + items.ProductName + " | " + "Price: $" + items.Price + " | " + "Quantity: " + items.StockQuantity + '\n');
+						console.log("ID: " + items.ItemID + " | " + "Item: " + items.ProductName + " | " + "Price: $" + items.Price + " | " + "Department: " + items.DepartmentName + " | " + "Quantity: " + items.StockQuantity + '\n');
 					})
 					console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
 				})
@@ -36,7 +36,7 @@ var start = function() {
 					console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
 					console.log("Low Inventory\n")
 					res.forEach(function(items) {
-						console.log("ID: " + items.ItemID + " | " + "Item: " + items.ProductName + " | " + "Price: $" + items.Price + " | " + "Quantity: " + items.StockQuantity + '\n');
+						console.log("ID: " + items.ItemID + " | " + "Item: " + items.ProductName + " | " + "Price: $" + items.Price + " | " + "Department: " + items.DepartmentName + " | " + "Quantity: " + items.StockQuantity + '\n');
 					})
 					console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
 				})
@@ -62,7 +62,6 @@ var addProduct = function() {
 		res.forEach(function(name) {
 			nameArr.push(name.DepartmentName);
 		})
-		console.log(nameArr);
 		inquirer.prompt([
 			{
 				type: "input",

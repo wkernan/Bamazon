@@ -17,7 +17,7 @@ var start = function() {
 			type: "list",
 			message: "Please Select an Option",
 			name: "choice",
-			choices: ["View Product Sales by Department", "Create New Department"]
+			choices: ["View Product Sales by Department", "Create New Department", "Exit"]
 		}
 	]).then(function(answers) {
 		switch(answers.choice) {
@@ -41,6 +41,9 @@ var start = function() {
 				break;
 			case "Create New Department":
 				createNew();
+				break;
+			case "Exit":
+				process.exit();
 				break;
 		}
 	})
