@@ -1,6 +1,7 @@
 var mysql = require('mysql');
 var prompt = require('prompt');
 var inquirer = require('inquirer');
+var Table = require('cli-table');
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -12,11 +13,18 @@ var connection = mysql.createConnection({
 
 var start = function() {
 	connection.query("SELECT * FROM Products", function(err, res) {
-		console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
-		res.forEach(function(items) {
-			console.log("ID: " + items.ItemID + " | " + "Item: " + items.ProductName + " | " + "Price: $" + items.Price + " | " + "Quantity: " + items.StockQuantity + '\n');
+		var table = new Table({
+			head: ["ID", "Item", "Price $", "Quantity"]
+		});
+		res.forEach(function(item) {
+			var itemArr = [];
+			itemArr.push(item.ItemID);
+			itemArr.push(item.ProductName);
+			itemArr.push(item.Price);
+			itemArr.push(item.StockQuantity);
+			table.push(itemArr);
 		})
-		console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		console.log(table.toString());
 		setTimeout(function(){idPrompt(res)}, 200);
 	})
 }
