@@ -2,6 +2,7 @@ var inquirer = require('inquirer');
 var mysql = require('mysql');
 var Table = require('cli-table');
 
+
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -23,19 +24,7 @@ var start = function() {
 		switch(answers.choice) {
 			case "View Product Sales by Department":
 				connection.query("SELECT * FROM Departments", function(err, res) {
-					var table = new Table({
-						head: ["DepartmentID", "DepartmentName", "OverHeadCosts", "ProductSales", "TotalProfit"]
-					});
-					res.forEach(function(dep) {
-						var depArr = [];
-						depArr.push(dep.DepartmentID);
-						depArr.push(dep.DepartmentName);
-						depArr.push(dep.OverHeadCosts);
-						depArr.push(dep.TotalSales);
-						depArr.push(parseInt(dep.TotalSales) - parseInt(dep.OverHeadCosts));
-						table.push(depArr);
-					})
-					console.log(table.toString());
+					showDep(res);
 				})
 				setTimeout(function(){start()},200);
 				break;
@@ -50,8 +39,10 @@ var start = function() {
 }
 
 var createNew = function() {
-	console.log("++++++++++ New Department ++++++++++");
-	inquirer.prompt([
+	connection.query("SELECT * FROM Departments", function(err, res) {
+		showDep(res);
+	})
+	setTimeout(function() {inquirer.prompt([
 		{
 			type: "input",
 			name: "name",
@@ -70,16 +61,27 @@ var createNew = function() {
 		}, function(err, res) {
 	    console.log("Department added!");
 			connection.query("SELECT * FROM Departments", function(err, res) {
-				console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
-				console.log("Departments\n");
-				res.forEach(function(items) {
-					console.log("ID: " + items.DepartmentID + " | " + "Department: " + items.DepartmentName + " | " + "Overhead: $" + items.OverHeadCosts + '\n');
-				})
-				console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+				showDep(res);
 			})
 			setTimeout(function(){start()},200);
     });
+	})},200);
+}
+
+var showDep = function(res) {
+	var table = new Table({
+		head: ["DepartmentID", "DepartmentName", "OverHeadCosts", "ProductSales", "TotalProfit"]
+	});
+	res.forEach(function(dep) {
+		var depArr = [];
+		depArr.push(dep.DepartmentID);
+		depArr.push(dep.DepartmentName);
+		depArr.push(dep.OverHeadCosts);
+		depArr.push(dep.TotalSales);
+		depArr.push(parseInt(dep.TotalSales) - parseInt(dep.OverHeadCosts));
+		table.push(depArr);
 	})
+	console.log(table.toString());
 }
 
 start();

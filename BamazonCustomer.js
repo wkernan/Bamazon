@@ -13,18 +13,7 @@ var connection = mysql.createConnection({
 
 var start = function() {
 	connection.query("SELECT * FROM Products", function(err, res) {
-		var table = new Table({
-			head: ["ID", "Item", "Price $", "Quantity"]
-		});
-		res.forEach(function(item) {
-			var itemArr = [];
-			itemArr.push(item.ItemID);
-			itemArr.push(item.ProductName);
-			itemArr.push(item.Price);
-			itemArr.push(item.StockQuantity);
-			table.push(itemArr);
-		})
-		console.log(table.toString());
+		showItems(res);
 		setTimeout(function(){idPrompt(res)}, 200);
 	})
 }
@@ -80,6 +69,21 @@ var buyPrompt = function(item) {
 			buyPrompt(item);
 		}
 	})
+}
+
+var showItems = function(res) {
+		var table = new Table({
+		head: ["ID", "Item", "Price $", "Quantity"]
+	});
+	res.forEach(function(item) {
+		var itemArr = [];
+		itemArr.push(item.ItemID);
+		itemArr.push(item.ProductName);
+		itemArr.push(item.Price);
+		itemArr.push(item.StockQuantity);
+		table.push(itemArr);
+	})
+	console.log(table.toString());
 }
 
 start();
