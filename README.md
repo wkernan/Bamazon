@@ -1,5 +1,7 @@
 #Bamazon
 
+[Link](https://youtu.be/1I4dlIo3IpE) to video
+
 A console based program for keeping track of your inventory
 * Run node BamazonCustomer.js to view the customer window
 * Run node BamazonManager.js to view the manager window
